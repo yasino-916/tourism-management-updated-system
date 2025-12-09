@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../../../services/authService';
 import ThemeToggle from '../../common/ThemeToggle';
+import { useLanguage } from '../../../context/LanguageContext';
 
 function LoginForm() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -75,7 +77,7 @@ function LoginForm() {
           fontSize: '24px',
           color: 'var(--text-primary)'
         }}>
-          Sign In
+          {t('login_title')}
         </h2>
         <p style={{
           textAlign: 'center',
@@ -83,7 +85,7 @@ function LoginForm() {
           marginBottom: '25px',
           fontSize: '14px'
         }}>
-          Welcome back! Please login to your account
+          {t('login_subtitle')}
         </p>
         {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
 
@@ -92,7 +94,7 @@ function LoginForm() {
             <input
               type="email"
               name="email"
-              placeholder="Enter your email"
+              placeholder={t('login_email_ph')}
               value={formData.email}
               onChange={handleChange}
               required
@@ -104,7 +106,7 @@ function LoginForm() {
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder={t('login_password_ph')}
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -113,15 +115,15 @@ function LoginForm() {
             </div>
           </div>
 
-          <button type="submit">Login</button>
+          <button type="submit">{t('login_btn')}</button>
         </form>
 
         <div className="forgot-password">
-          <Link to="/forgot">Forgot your password?</Link>
+          <Link to="/forgot">{t('login_forgot')}</Link>
         </div>
 
         <div className="register-link">
-          <p>Don't have an account? <Link to="/register">Register here</Link></p>
+          <p>{t('login_register_text')} <Link to="/register">{t('login_register_link')}</Link></p>
         </div>
 
         <div style={{
@@ -139,7 +141,7 @@ function LoginForm() {
             onMouseEnter={(e) => e.target.style.color = '#3b82f6'}
             onMouseLeave={(e) => e.target.style.color = '#6b7280'}
           >
-            ← Back to Home
+            {t('back_home')}
           </Link>
         </div>
       </div>

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import ResearcherSidebar from './ResearcherSidebar';
 import ThemeToggle from '../common/ThemeToggle';
+import { useLanguage } from '../../context/LanguageContext';
 import './researcher.css';
 import { getResearcherSummary } from './researcherService';
+import UserProfileMenu from '../common/UserProfileMenu';
 
 export default function ResearcherDashboard() {
+  const { t } = useLanguage();
   const [summary, setSummary] = useState({ totalSites: 0, pending: 0, approved: 0 });
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -38,46 +41,38 @@ export default function ResearcherDashboard() {
       <main className="researcher-main">
         <header className="researcher-main-header">
           <div>
-            <h1>Welcome back, {user.first_name || 'Researcher'}</h1>
+            <h1>{t('welcome_back')}, {user.first_name || 'Researcher'}</h1>
             <p className="subtitle">Here's what's happening with your contributions today.</p>
           </div>
           <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <ThemeToggle />
-            <div className="notification-bell-container" style={{ position: 'relative' }}>
+            <div style={{ position: 'relative' }}>
               <button
-                className="notification-bell"
+                className="notification-btn"
                 onClick={() => {
                   setShowNotifications(!showNotifications);
                   if (!showNotifications) setUnreadCount(0);
                 }}
-                style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', position: 'relative' }}
               >
                 🔔
                 {unreadCount > 0 && (
-                  <span className="notification-badge" style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'red', color: 'white', borderRadius: '50%', padding: '2px 6px', fontSize: '0.7rem' }}>{unreadCount}</span>
+                  <span className="notification-count">{unreadCount}</span>
                 )}
               </button>
 
               {showNotifications && (
-                <div className="notification-dropdown" style={{
-                  position: 'absolute',
-                  right: 0,
-                  top: '40px',
-                  background: 'white',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  borderRadius: '8px',
-                  width: '300px',
-                  zIndex: 1000,
-                  border: '1px solid #eee'
-                }}>
-                  <div style={{ padding: '10px 15px', borderBottom: '1px solid #eee', fontWeight: 'bold' }}>Notifications</div>
-                  <ul className="notification-list" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                    <li style={{ padding: '15px', textAlign: 'center', color: '#999' }}>No notifications</li>
+                <div className="notification-dropdown">
+                  <div className="notification-header">{t('dash_notifications')}</div>
+                  <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+                    <li style={{ padding: '15px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                      {t('dash_no_notifications')}
+                    </li>
                   </ul>
                 </div>
               )}
             </div>
             <span className="date-badge">{new Date().toLocaleDateString()}</span>
+            <UserProfileMenu userType="researcher" />
           </div>
         </header>
 
@@ -85,7 +80,7 @@ export default function ResearcherDashboard() {
           <div className="card stat-card">
             <div className="stat-icon sites-icon">🏛️</div>
             <div className="stat-info">
-              <h3>Total Sites</h3>
+              <h3>{t('dash_sites')}</h3>
               <div className="card-value">{summary.totalSites}</div>
               <span className="stat-label">Contributed</span>
             </div>
@@ -93,7 +88,7 @@ export default function ResearcherDashboard() {
           <div className="card stat-card">
             <div className="stat-icon pending-icon">⏳</div>
             <div className="stat-info">
-              <h3>Pending</h3>
+              <h3>{t('dash_pending')}</h3>
               <div className="card-value" style={{ color: '#f39c12' }}>{summary.pending}</div>
               <span className="stat-label">Awaiting Approval</span>
             </div>
@@ -101,7 +96,7 @@ export default function ResearcherDashboard() {
           <div className="card stat-card">
             <div className="stat-icon approved-icon">✅</div>
             <div className="stat-info">
-              <h3>Approved</h3>
+              <h3>{t('dash_approved')}</h3>
               <div className="card-value" style={{ color: '#27ae60' }}>{summary.approved}</div>
               <span className="stat-label">Published Live</span>
             </div>
@@ -110,23 +105,23 @@ export default function ResearcherDashboard() {
 
         <div className="dashboard-grid">
           <section className="panel quick-actions-panel">
-            <h3>🚀 Quick Actions</h3>
+            <h3>🚀 {t('dash_quick_actions')}</h3>
             <div className="action-buttons">
               <button className="btn-primary action-btn" onClick={() => window.location.href = '/researcher/sites?action=add'}>
-                <span className="icon">+</span> Add New Site
+                <span className="icon">+</span> {t('dash_add_site')}
               </button>
               <button className="btn-outline action-btn" onClick={handleUploadMedia}>
-                <span className="icon">📤</span> Upload Media
+                <span className="icon">📤</span> {t('dash_upload_media')}
               </button>
               <button className="btn-outline action-btn" onClick={() => window.location.href = '/researcher/profile'}>
-                <span className="icon">👤</span> Update Profile
+                <span className="icon">👤</span> {t('dash_update_profile')}
               </button>
             </div>
           </section>
 
           <section className="panel notifications-panel">
-            <h3>📅 Recent Activity</h3>
-            <p style={{ color: '#666' }}>No recent activity to show.</p>
+            <h3>📅 {t('dash_recent_activity')}</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>No recent activity to show.</p>
           </section>
         </div>
       </main>

@@ -48,6 +48,7 @@ export default function RequestGuide() {
     const requestData = {
       visitor_id: user.user_id,
       visitor_name: formData.fullName,
+      visitor_contact: formData.contact,
       site_id: parseInt(siteId),
       site_name: site ? site.site_name : 'Unknown Site',
       preferred_date: formData.date,

@@ -30,12 +30,14 @@ class RequestsController
         }
 
         $stmt = $this->db->prepare(
-            'INSERT INTO GuideRequests (visitor_id, site_id, guide_type_id, preferred_date, preferred_time, number_of_visitors, special_requirements, meeting_point, request_status)
-             VALUES (:visitor_id, :site_id, :guide_type_id, :preferred_date, :preferred_time, :number_of_visitors, :special_requirements, :meeting_point, :request_status)'
+            'INSERT INTO GuideRequests (visitor_id, visitor_name, visitor_contact, site_id, guide_type_id, preferred_date, preferred_time, number_of_visitors, special_requirements, meeting_point, request_status)
+             VALUES (:visitor_id, :visitor_name, :visitor_contact, :site_id, :guide_type_id, :preferred_date, :preferred_time, :number_of_visitors, :special_requirements, :meeting_point, :request_status)'
         );
 
         $stmt->execute([
             'visitor_id' => $visitorId,
+            'visitor_name' => $input['visitor_name'] ?? null,
+            'visitor_contact' => $input['visitor_contact'] ?? null,
             'site_id' => (int) $input['site_id'],
             'guide_type_id' => $input['guide_type_id'] ?? null,
             'preferred_date' => $input['preferred_date'],
@@ -48,9 +50,21 @@ class RequestsController
 
         $requestId = (int) $this->db->lastInsertId();
 
+        // Fetch visitor name
+        $visitorName = "Visitor #$visitorId";
+        try {
+            $uStmt = $this->db->prepare("SELECT first_name, last_name FROM Users WHERE user_id = ?");
+            $uStmt->execute([$visitorId]);
+            $visitor = $uStmt->fetch();
+            if ($visitor) {
+                $visitorName = $visitor['first_name'] . ' ' . $visitor['last_name'];
+            }
+        } catch (\Exception $e) {
+        }
+
         $this->notifications->notifyAdmins(
             'New Guide Request',
-            "A new guide request has been submitted by Visitor #$visitorId.",
+            "A new guide request has been submitted by $visitorName.",
             'guide_request',
             $requestId
         );
@@ -83,7 +97,8 @@ class RequestsController
     {
         $sql = '
             SELECT r.*, 
-                   CONCAT(u.first_name, " ", u.last_name) as visitor_name, 
+                   COALESCE(r.visitor_name, CONCAT(u.first_name, " ", u.last_name)) as visitor_name, 
+                   r.visitor_contact,
                    s.site_name 
             FROM GuideRequests r
             LEFT JOIN Users u ON r.visitor_id = u.user_id
@@ -97,7 +112,8 @@ class RequestsController
             $guideId = (int) ($context['sub'] ?? 0);
             $sql = '
                 SELECT r.*, 
-                       CONCAT(u.first_name, " ", u.last_name) as visitor_name, 
+                       COALESCE(r.visitor_name, CONCAT(u.first_name, " ", u.last_name)) as visitor_name, 
+                       r.visitor_contact,
                        s.site_name 
                 FROM GuideRequests r
                 LEFT JOIN Users u ON r.visitor_id = u.user_id

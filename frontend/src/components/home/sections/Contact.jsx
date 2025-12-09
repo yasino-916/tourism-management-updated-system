@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../../context/LanguageContext';
 
 function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,7 +18,7 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Thank you ${formData.name}! We'll get back to you soon.`);
+    alert(`${t('contact_success')} ${formData.name}! ${t('contact_success_msg')}`);
     setFormData({ name: '', email: '', message: '' });
   };
 
@@ -34,7 +36,7 @@ function Contact() {
             color: 'var(--text-primary)',
             marginBottom: '15px'
           }}>
-            Sends us a Message
+            {t('contact_title')}
           </h2>
           <div style={{
             width: '60px',
@@ -61,7 +63,7 @@ function Contact() {
             <input
               type="text"
               name="name"
-              placeholder="Name"
+              placeholder={t('contact_name_ph')}
               value={formData.name}
               onChange={handleChange}
               required
@@ -81,7 +83,7 @@ function Contact() {
             <input
               type="email"
               name="email"
-              placeholder="Email"
+              placeholder={t('contact_email_ph')}
               value={formData.email}
               onChange={handleChange}
               required
@@ -103,7 +105,7 @@ function Contact() {
           {/* Message Textarea */}
           <textarea
             name="message"
-            placeholder="Message"
+            placeholder={t('contact_msg_ph')}
             value={formData.message}
             onChange={handleChange}
             required
@@ -152,7 +154,7 @@ function Contact() {
               e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
             }}
           >
-            Send Message
+            {t('contact_btn')}
           </button>
         </form>
       </div>

@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import AdminSidebar from './AdminSidebar';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ThemeToggle from '../common/ThemeToggle';
+import { useLanguage } from '../../context/LanguageContext';
 import './admin.css';
 import { getSummary, getRequests, getPayments, createSite, createUser, getNotifications, markNotificationRead } from './adminService';
 import AddSiteModal from './AddSiteModal';
 import AddUserModal from './AddUserModal';
+import UserProfileMenu from '../common/UserProfileMenu';
 
 export default function AdminDashboard() {
+  const { t } = useLanguage();
   const [summary, setSummary] = useState(null);
   const [requests, setRequests] = useState([]);
   const [payments, setPayments] = useState([]);
@@ -48,7 +51,6 @@ export default function AdminDashboard() {
 
   const markAsRead = (id) => {
     markNotificationRead(id).then(() => {
-      // Optimistic update
       setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
       setUnreadCount(prev => Math.max(0, prev - 1));
     });
@@ -60,123 +62,68 @@ export default function AdminDashboard() {
 
   const onUserCreated = (user) => { refresh(); };
 
-  const formatStatus = (status) => {
-    if (status === 'accepted_by_guide') return 'Accepted';
-    return status;
-  };
-
   return (
     <div className="admin-layout">
       <AdminSidebar />
       <main className="admin-main">
         <header className="admin-main-header">
           <div className="admin-actions">
-            <button className="btn-outline" onClick={() => { setAddUserType('site_agent'); setShowAddUser(true); }}>Add Site Agent</button>
-            <button className="btn-outline" onClick={() => { setAddUserType('researcher'); setShowAddUser(true); }}>Add Researcher</button>
+            <button className="btn-outline" onClick={() => { setAddUserType('site_agent'); setShowAddUser(true); }}>{t('dash_add_agent')}</button>
+            <button className="btn-outline" onClick={() => { setAddUserType('researcher'); setShowAddUser(true); }}>{t('dash_add_researcher')}</button>
           </div>
+
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <ThemeToggle />
             <div style={{ position: 'relative' }}>
               <button
+                className="notification-btn"
                 onClick={() => {
                   setShowNotifications(!showNotifications);
                   if (!showNotifications) markAllAsRead();
                 }}
-                style={{
-                  background: 'white',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                  fontSize: '1.2rem',
-                  position: 'relative'
-                }}
               >
                 🔔
                 {unreadCount > 0 && (
-                  <span style={{
-                    position: 'absolute',
-                    top: '-5px',
-                    right: '-5px',
-                    background: '#ff4d4f',
-                    color: 'white',
-                    fontSize: '0.7rem',
-                    width: '18px',
-                    height: '18px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 'bold'
-                  }}>
+                  <span className="notification-count">
                     {unreadCount}
                   </span>
                 )}
               </button>
 
               {showNotifications && (
-                <div style={{
-                  position: 'absolute',
-                  top: '120%',
-                  right: 0,
-                  width: '350px',
-                  background: 'white',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                  zIndex: 1000,
-                  border: '1px solid #eee',
-                  maxHeight: '400px',
-                  overflowY: 'auto'
-                }}>
-                  <div style={{ padding: '15px', borderBottom: '1px solid #eee', fontWeight: 'bold', color: '#333' }}>
-                    Notifications
+                <div className="notification-dropdown">
+                  <div className="notification-header">
+                    {t('dash_notifications')}
                   </div>
                   {notifications.length === 0 ? (
-                    <div style={{ padding: '20px', textAlign: 'center', color: '#999' }}>No notifications</div>
+                    <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-secondary)' }}>{t('dash_no_notifications')}</div>
                   ) : (
                     <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
                       {notifications.map(notif => (
                         <li
                           key={notif.id}
-                          style={{
-                            padding: '12px 15px',
-                            borderBottom: '1px solid #f5f5f5',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '6px',
-                            backgroundColor: notif.read ? '#fff' : '#f5f9ff'
-                          }}
+                          className={`notification-list-item ${!notif.read ? 'unread' : ''}`}
                         >
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <span style={{
-                                width: '10px',
-                                height: '10px',
-                                borderRadius: '50%',
-                                background: notif.tone === 'success' ? '#52c41a' : '#fa8c16'
-                              }}></span>
-                              <div style={{ fontWeight: '600', color: '#1f2937' }}>{notif.title}</div>
+                          <div className="notification-title-row">
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <span className={`notification-dot dot-${notif.tone}`}></span>
+                              <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{notif.title}</div>
                             </div>
                             <div style={{ display: 'flex', gap: '8px' }}>
                               {!notif.read && (
                                 <button
                                   className="btn-sm"
-                                  style={{ background: '#e0f2fe', color: '#0ea5e9', border: '1px solid #bae6fd' }}
+                                  style={{ background: 'var(--bg-primary)', color: 'var(--accent-primary)', border: '1px solid var(--border-color)' }}
                                   onClick={() => markAsRead(notif.id)}
                                 >
-                                  Mark as read
+                                  {t('dash_mark_read')}
                                 </button>
                               )}
                             </div>
                           </div>
-                          <div style={{ fontSize: '0.9rem', color: '#4b5563' }}>{notif.message}</div>
-                          <div style={{ fontSize: '0.8rem', color: '#9ca3af' }}>{new Date(notif.created_at).toLocaleString()}</div>
+                          <div className="notification-msg">{notif.message}</div>
+                          <div className="notification-time">{new Date(notif.created_at).toLocaleString()}</div>
                         </li>
                       ))}
                     </ul>
@@ -184,25 +131,27 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
+
+            <UserProfileMenu userType="admin" />
           </div>
         </header>
 
         {summary ? (
           <section className="admin-cards">
             <div className="card">
-              <h3>Total Users</h3>
+              <h3>{t('dash_users')}</h3>
               <div className="card-value">{summary.totalUsers}</div>
             </div>
             <div className="card">
-              <h3>Total Sites</h3>
+              <h3>{t('dash_sites')}</h3>
               <div className="card-value">{summary.totalSites}</div>
             </div>
             <div className="card">
-              <h3>Total Visits</h3>
+              <h3>{t('dash_visits')}</h3>
               <div className="card-value">{summary.totalVisits}</div>
             </div>
             <div className="card">
-              <h3>Payments</h3>
+              <h3>{t('dash_revenue')}</h3>
               <div className="card-value">{summary.totalPayments}</div>
             </div>
           </section>

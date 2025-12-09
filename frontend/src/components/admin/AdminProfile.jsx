@@ -3,8 +3,10 @@ import AdminSidebar from './AdminSidebar';
 import './admin.css';
 import { changePassword, updateProfile } from './adminService';
 import ThemeToggle from '../common/ThemeToggle';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function AdminProfile() {
+  const { t } = useLanguage();
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -37,7 +39,7 @@ export default function AdminProfile() {
           firstName: parsedUser.first_name || '',
           lastName: parsedUser.last_name || '',
           email: parsedUser.email || '',
-          username: parsedUser.user_type || 'admin' // user_type is used as username conceptually here
+          username: parsedUser.user_type || 'admin'
         });
       } catch (e) {
         console.error("Failed to parse user", e);
@@ -74,10 +76,10 @@ export default function AdminProfile() {
       localStorage.setItem('admin_user', JSON.stringify(updatedUser));
       setUser(updatedUser);
 
-      setProfileMessage({ type: 'success', text: 'Profile updated successfully' });
+      setProfileMessage({ type: 'success', text: t('msg_profile_success') });
       setIsEditing(false);
     } catch (err) {
-      setProfileMessage({ type: 'error', text: err.message || 'Failed to update profile' });
+      setProfileMessage({ type: 'error', text: t('msg_profile_fail') });
     }
   };
 
@@ -86,17 +88,17 @@ export default function AdminProfile() {
     setPasswordMessage({ type: '', text: '' });
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setPasswordMessage({ type: 'error', text: 'New passwords do not match' });
+      setPasswordMessage({ type: 'error', text: t('msg_password_mismatch') });
       return;
     }
 
     try {
       await changePassword(user.username, passwordData.currentPassword, passwordData.newPassword);
-      setPasswordMessage({ type: 'success', text: 'Password changed successfully' });
+      setPasswordMessage({ type: 'success', text: t('msg_password_success') });
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
       setIsChangingPassword(false);
     } catch (err) {
-      setPasswordMessage({ type: 'error', text: err.message || 'Failed to change password' });
+      setPasswordMessage({ type: 'error', text: e.message ? e.message : t('msg_password_fail') });
     }
   };
 
@@ -104,137 +106,140 @@ export default function AdminProfile() {
     <div className="admin-layout">
       <AdminSidebar />
       <main className="admin-main">
-        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 20px' }}>
+        <header className="admin-main-header">
+          <h1>{t('title_edit_profile')}</h1>
           <ThemeToggle />
-        </div>
-        <div className="admin-profile-card-new">
-          {/* Header */}
-          <div className="profile-header-row">
-            <h2>Edit Profile Information</h2>
-            {!isEditing && (
-              <button className="btn-blue" onClick={() => setIsEditing(true)}>Edit Profile</button>
-            )}
-          </div>
+        </header>
 
-          {/* User Info */}
-          <div className="profile-user-info">
-            <div className="avatar-circle-large">
-              {profileData.firstName.charAt(0).toLowerCase()}
+        <div className="panel" style={{ maxWidth: '800px', margin: '0 auto' }}>
+          {/* Header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '15px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <div style={{ width: 60, height: 60, borderRadius: '50%', background: 'var(--accent-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}>
+                {profileData.firstName.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <h2 style={{ margin: 0, fontSize: '1.2rem' }}>{profileData.firstName} {profileData.lastName}</h2>
+                <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{profileData.username}</p>
+              </div>
             </div>
-            <div className="user-details">
-              <h3>{profileData.firstName} {profileData.lastName}</h3>
-              <p>{profileData.username}</p>
-            </div>
+            {!isEditing && (
+              <button className="btn-primary" onClick={() => setIsEditing(true)}>
+                {t('btn_edit_profile')}
+              </button>
+            )}
           </div>
 
           {/* Profile Form/View */}
           {isEditing ? (
-            <form onSubmit={submitProfile} className="profile-edit-form">
-              {profileMessage.text && <div className={`alert alert-${profileMessage.type}`}>{profileMessage.text}</div>}
-              <div className="form-grid">
+            <form onSubmit={submitProfile}>
+              {profileMessage.text && (
+                <div style={{ padding: '10px', borderRadius: '4px', marginBottom: '15px', background: profileMessage.type === 'error' ? '#fff1f0' : '#f6ffed', color: profileMessage.type === 'error' ? '#cf1322' : '#389e0d' }}>
+                  {profileMessage.text}
+                </div>
+              )}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                 <div className="form-group">
-                  <label>First Name</label>
+                  <label>{t('lbl_first_name')}</label>
                   <input
                     type="text"
                     name="firstName"
                     value={profileData.firstName}
                     onChange={handleProfileChange}
-                    className="form-control"
                   />
                 </div>
                 <div className="form-group">
-                  <label>Last Name</label>
+                  <label>{t('lbl_last_name')}</label>
                   <input
                     type="text"
                     name="lastName"
                     value={profileData.lastName}
                     onChange={handleProfileChange}
-                    className="form-control"
-                  />
-                </div>
-                <div className="form-group full-width">
-                  <label>Username</label>
-                  <input
-                    type="text"
-                    name="username"
-                    value={profileData.username}
-                    onChange={handleProfileChange}
-                    className="form-control"
                   />
                 </div>
               </div>
-              <div className="form-actions">
-                <button type="button" className="btn-outline" onClick={() => setIsEditing(false)}>Cancel</button>
-                <button type="submit" className="btn-blue">Save Changes</button>
+              <div className="form-group">
+                <label>{t('lbl_username')}</label>
+                <input
+                  type="text"
+                  name="username"
+                  value={profileData.username}
+                  onChange={handleProfileChange}
+                  disabled // Username usually not editable easily
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '15px' }}>
+                <button type="button" className="btn-outline" onClick={() => setIsEditing(false)}>{t('btn_cancel') || 'Cancel'}</button>
+                <button type="submit" className="btn-primary">{t('dash_save') || 'Save'}</button>
               </div>
             </form>
           ) : (
-            <div className="profile-view-grid">
-              <div className="view-group">
-                <label>First Name:</label>
-                <div className="view-value">{profileData.firstName}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+              <div>
+                <label style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{t('lbl_first_name')}</label>
+                <div style={{ fontWeight: '500' }}>{profileData.firstName}</div>
               </div>
-              <div className="view-group">
-                <label>Last Name:</label>
-                <div className="view-value">{profileData.lastName}</div>
+              <div>
+                <label style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{t('lbl_last_name')}</label>
+                <div style={{ fontWeight: '500' }}>{profileData.lastName}</div>
               </div>
-              <div className="view-group full-width">
-                <label>Username:</label>
-                <div className="view-value">{profileData.username}</div>
+              <div>
+                <label style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{t('lbl_username')}</label>
+                <div style={{ fontWeight: '500' }}>{profileData.username}</div>
               </div>
             </div>
           )}
 
-          <div className="profile-divider"></div>
-
           {/* Security Section */}
-          <div className="profile-header-row">
-            <h2>Security</h2>
-            {!isChangingPassword && (
-              <button className="btn-orange" onClick={() => setIsChangingPassword(true)}>Change Password</button>
+          <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid var(--border-color)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{t('title_security')}</h3>
+              {!isChangingPassword && (
+                <button className="btn-outline" onClick={() => setIsChangingPassword(true)}>{t('btn_change_password')}</button>
+              )}
+            </div>
+
+            {isChangingPassword && (
+              <form onSubmit={submitPassword}>
+                {passwordMessage.text && (
+                  <div style={{ padding: '10px', borderRadius: '4px', marginBottom: '15px', background: passwordMessage.type === 'error' ? '#fff1f0' : '#f6ffed', color: passwordMessage.type === 'error' ? '#cf1322' : '#389e0d' }}>
+                    {passwordMessage.text}
+                  </div>
+                )}
+                <div className="form-group">
+                  <label>{t('lbl_current_password')}</label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>{t('lbl_new_password')}</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>{t('lbl_confirm_password')}</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                  />
+                </div>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '15px' }}>
+                  <button type="button" className="btn-outline" onClick={() => setIsChangingPassword(false)}>{t('btn_cancel') || 'Cancel'}</button>
+                  <button type="submit" className="btn-primary">{t('btn_update_password')}</button>
+                </div>
+              </form>
             )}
           </div>
-
-          {isChangingPassword && (
-            <form onSubmit={submitPassword} className="password-form">
-              {passwordMessage.text && <div className={`alert alert-${passwordMessage.type}`}>{passwordMessage.text}</div>}
-              <div className="form-group">
-                <label>Current Password</label>
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value={passwordData.currentPassword}
-                  onChange={handlePasswordChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                <label>New Password</label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={passwordData.newPassword}
-                  onChange={handlePasswordChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                <label>Confirm Password</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={passwordData.confirmPassword}
-                  onChange={handlePasswordChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-actions">
-                <button type="button" className="btn-outline" onClick={() => setIsChangingPassword(false)}>Cancel</button>
-                <button type="submit" className="btn-orange">Update Password</button>
-              </div>
-            </form>
-          )}
-
         </div>
       </main>
     </div>

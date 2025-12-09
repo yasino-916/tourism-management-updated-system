@@ -1,6 +1,9 @@
 import React from 'react';
+import { useLanguage } from '../../../context/LanguageContext';
 
 function About() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="about"
@@ -24,7 +27,7 @@ function About() {
             textTransform: 'uppercase',
             marginBottom: '20px',
             opacity: 0.9
-          }}>About Us</span>
+          }}>{t('about_badge')}</span>
           <h2 style={{
             fontSize: 'clamp(2rem, 4vw, 2.5rem)',
             fontWeight: 700,
@@ -32,7 +35,7 @@ function About() {
             marginBottom: '20px',
             lineHeight: 1.3
           }}>
-            Your Gateway to Ethiopian Heritage
+            {t('about_title')}
           </h2>
           <p style={{
             color: 'var(--text-secondary)',
@@ -41,8 +44,7 @@ function About() {
             margin: '0 auto',
             lineHeight: 1.7
           }}>
-            We connect travelers with Ethiopia's rich cultural heritage through verified historical sites,
-            professional local guides, and seamless booking experiences.
+            {t('about_desc')}
           </p>
         </div>
 
@@ -93,7 +95,7 @@ function About() {
               color: 'var(--text-primary)',
               marginBottom: '20px'
             }}>
-              Preserving History, Creating Memories
+              {t('about_card_title')}
             </h3>
             <p style={{
               color: 'var(--text-secondary)',
@@ -101,9 +103,7 @@ function About() {
               lineHeight: 1.8,
               marginBottom: '15px'
             }}>
-              Our platform bridges the gap between historical site enthusiasts and professional
-              tourism services. We provide a comprehensive ecosystem where visitors can explore,
-              researchers can contribute, and certified guides can share their expertise.
+              {t('about_card_desc1')}
             </p>
             <p style={{
               color: 'var(--text-secondary)',
@@ -111,8 +111,7 @@ function About() {
               lineHeight: 1.8,
               marginBottom: '30px'
             }}>
-              From the ancient rock-hewn churches of Lalibela to the castles of Gondar,
-              we ensure every journey is authentic, educational, and unforgettable.
+              {t('about_card_desc2')}
             </p>
 
             {/* Stats */}
@@ -125,15 +124,15 @@ function About() {
             }}>
               <div>
                 <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-primary)' }}>50+</div>
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Historic Sites</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('stats_sites')}</div>
               </div>
               <div>
                 <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-primary)' }}>100+</div>
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Expert Guides</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('stats_guides')}</div>
               </div>
               <div>
                 <div style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--accent-primary)' }}>1000+</div>
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Happy Visitors</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t('stats_visitors')}</div>
               </div>
             </div>
           </div>

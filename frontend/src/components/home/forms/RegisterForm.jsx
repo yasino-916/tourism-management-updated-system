@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { visitorService } from '../../../services/visitorService';
 import ThemeToggle from '../../common/ThemeToggle';
+import { useLanguage } from '../../../context/LanguageContext';
 
 function RegisterForm() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -62,7 +64,7 @@ function RegisterForm() {
           fontSize: '24px',
           color: 'var(--text-primary)'
         }}>
-          Create Account
+          {t('register_title')}
         </h2>
         <p style={{
           textAlign: 'center',
@@ -70,7 +72,7 @@ function RegisterForm() {
           marginBottom: '25px',
           fontSize: '14px'
         }}>
-          Join our community of explorers
+          {t('register_subtitle')}
         </p>
         {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
 
@@ -80,7 +82,7 @@ function RegisterForm() {
               <input
                 type="text"
                 name="firstName"
-                placeholder="First Name"
+                placeholder={t('reg_fname_ph')}
                 value={formData.firstName}
                 onChange={handleChange}
                 required
@@ -90,7 +92,7 @@ function RegisterForm() {
               <input
                 type="text"
                 name="lastName"
-                placeholder="Last Name"
+                placeholder={t('reg_lname_ph')}
                 value={formData.lastName}
                 onChange={handleChange}
                 required
@@ -102,7 +104,7 @@ function RegisterForm() {
             <input
               type="email"
               name="email"
-              placeholder="Email Address"
+              placeholder={t('login_email_ph')}
               value={formData.email}
               onChange={handleChange}
               required
@@ -113,7 +115,7 @@ function RegisterForm() {
             <input
               type="tel"
               name="phone"
-              placeholder="Phone Number"
+              placeholder={t('reg_phone_ph')}
               value={formData.phone}
               onChange={handleChange}
             />
@@ -123,18 +125,18 @@ function RegisterForm() {
             <input
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder={t('login_password_ph')}
               value={formData.password}
               onChange={handleChange}
               required
             />
           </div>
 
-          <button type="submit">Register</button>
+          <button type="submit">{t('register_btn')}</button>
         </form>
 
         <div className="login-link">
-          <p>Already have an account? <Link to="/login">Login here</Link></p>
+          <p>{t('register_login_text')} <Link to="/login">{t('register_login_link')}</Link></p>
         </div>
 
         <div style={{
@@ -152,7 +154,7 @@ function RegisterForm() {
             onMouseEnter={(e) => e.target.style.color = '#3b82f6'}
             onMouseLeave={(e) => e.target.style.color = '#6b7280'}
           >
-            ← Back to Home
+            {t('back_home')}
           </Link>
         </div>
       </div>

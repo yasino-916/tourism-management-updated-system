@@ -1,42 +1,44 @@
 import React from 'react';
-
+import { useLanguage } from '../../../context/LanguageContext';
 
 function Features() {
+  const { t } = useLanguage();
+
   const features = [
     {
       icon: '🏛️',
-      title: 'Explore Sites',
-      description: 'Browse through hundreds of historical sites with detailed information, photos, and interactive location maps.',
+      title: t('f_sites_title'),
+      description: t('f_sites_desc'),
       color: 'var(--accent-primary)'
     },
     {
       icon: '🔍',
-      title: 'Smart Discovery',
-      description: 'Advanced search and filtering to find historical sites based on location, era, and cultural significance.',
+      title: t('f_smart_title'),
+      description: t('f_smart_desc'),
       color: '#06b6d4'
     },
     {
       icon: '👨‍🏫',
-      title: 'Expert Guides',
-      description: 'Connect with certified site agents for an enriched historical experience and authentic storytelling.',
+      title: t('f_guides_title'),
+      description: t('f_guides_desc'),
       color: '#10b981'
     },
     {
       icon: '🤝',
-      title: 'Perfect Matching',
-      description: 'Smart algorithm matches you with the perfect guide based on your interests and language preferences.',
+      title: t('f_match_title'),
+      description: t('f_match_desc'),
       color: '#f59e0b'
     },
     {
       icon: '📚',
-      title: 'Rich Content',
-      description: 'Access verified historical information curated by tourism experts and professional researchers.',
+      title: t('f_content_title'),
+      description: t('f_content_desc'),
       color: '#ef4444'
     },
     {
       icon: '📅',
-      title: 'Easy Booking',
-      description: 'Seamless booking experience with real-time availability and instant confirmation.',
+      title: t('f_book_title'),
+      description: t('f_book_desc'),
       color: '#8b5cf6'
     }
   ];
@@ -58,7 +60,7 @@ function Features() {
             textTransform: 'uppercase',
             fontSize: '0.85rem',
             letterSpacing: '2px'
-          }}>Why Choose Us</span>
+          }}>{t('feat_badge')}</span>
           <h2 style={{
             fontSize: 'clamp(2rem, 4vw, 2.5rem)',
             fontWeight: 700,
@@ -66,7 +68,7 @@ function Features() {
             marginTop: '15px',
             marginBottom: '20px'
           }}>
-            Discover Our Features
+            {t('feat_title')}
           </h2>
           <p style={{
             color: 'var(--text-secondary)',
@@ -75,7 +77,7 @@ function Features() {
             fontSize: '1.1rem',
             lineHeight: 1.7
           }}>
-            Everything you need to experience the rich history and culture of Ethiopia with confidence and ease.
+            {t('feat_desc')}
           </p>
         </div>
 

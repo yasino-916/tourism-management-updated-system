@@ -4,8 +4,10 @@ import './admin.css';
 import { getSites, deleteSite, getUsers, updateSiteStatus } from './adminService';
 import AdminModal from './AdminModal';
 import ThemeToggle from '../common/ThemeToggle';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function AdminSites() {
+  const { t } = useLanguage();
   const [sites, setSites] = useState([]);
   const [users, setUsers] = useState([]);
   const [viewSite, setViewSite] = useState(null);
@@ -30,161 +32,127 @@ export default function AdminSites() {
       refresh();
       setActionDropdown(null);
     } catch (err) {
-      alert('Update failed: ' + err.message);
+      alert(t('msg_update_fail') + ': ' + err.message);
     }
   };
 
   const getResearcherName = (site) => {
-    if (site.researcher) return site.researcher; // Legacy support
+    if (site.researcher) return site.researcher; // Legacy
     if (site.researcher_id) {
       const user = users.find(u => u.user_id === site.researcher_id);
-      return user ? `${user.first_name} ${user.last_name}` : 'Unknown';
+      return user ? `${user.first_name} ${user.last_name}` : t('lbl_unknown');
     }
     return 'N/A';
   };
 
   const handleDelete = async (id) => {
-    // use window.confirm but disable the eslint restricted-globals warning for this line
     // eslint-disable-next-line no-restricted-globals
-    if (!confirm('Delete this site?')) return;
+    if (!confirm(t('msg_confirm_site_delete'))) return;
     try {
       await deleteSite(id);
       refresh();
-    } catch (err) { alert('Delete failed: ' + err.message); }
+    } catch (err) { alert(t('msg_delete_fail') + ': ' + err.message); }
   };
 
   return (
     <div className="admin-layout">
       <AdminSidebar />
       <main className="admin-main">
-        <header className="admin-main-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1>Sites</h1>
+        <header className="admin-main-header">
+          <h1>{t('admin_sites')}</h1>
           <ThemeToggle />
         </header>
         <section className="panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <h3>Sites</h3>
+            <h3>{t('admin_sites')}</h3>
           </div>
-          <table className="table">
-            <thead>
-              <tr><th>ID</th><th>Name</th><th>Researcher</th><th>Approved</th><th>Actions</th></tr>
-            </thead>
-            <tbody>
-              {sites.map((s, index) => (
-                <tr key={`${s.site_id}-${index}`}>
-                  <td>{s.site_id}</td>
-                  <td>{s.site_name}</td>
-                  <td>{getResearcherName(s)}</td>
-                  <td>
-                    <span style={{
-                      color: s.status === 'rejected' ? 'red' : (s.is_approved ? 'green' : '#fa8c16'),
-                      fontWeight: 'bold'
-                    }}>
-                      {s.status === 'rejected' ? 'No' : (s.is_approved ? 'Yes' : 'Pending')}
-                    </span>
-                  </td>
-                  <td>
-                    <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                      <button className="btn-sm" onClick={() => setViewSite(s)}>View</button>
-
-                      <div style={{ position: 'relative' }}>
-                        <button
-                          className="btn-sm"
-                          style={{ background: '#722ed1', color: 'white', border: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setActionDropdown(actionDropdown === index ? null : index);
-                          }}
-                        >
-                          Edit <span>▼</span>
-                        </button>
-                        {actionDropdown === index && (
-                          <div
-                            onClick={(e) => e.stopPropagation()}
-                            style={{
-                              position: 'absolute',
-                              top: index >= sites.length - 3 ? 'auto' : '100%',
-                              bottom: index >= sites.length - 3 ? '100%' : 'auto',
-                              right: 0,
-                              background: 'white',
-                              border: '1px solid #eee',
-                              borderRadius: '4px',
-                              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                              zIndex: 9999,
-                              minWidth: '150px',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              padding: '4px 0'
-                            }}>
-                            <button
-                              style={{
-                                display: 'block',
-                                width: '100%',
-                                padding: '10px 15px',
-                                border: 'none',
-                                background: 'white',
-                                textAlign: 'left',
-                                cursor: s.is_approved ? 'default' : 'pointer',
-                                color: s.is_approved ? '#ccc' : '#52c41a',
-                                fontSize: '14px',
-                                fontWeight: '500'
-                              }}
-                              onClick={() => !s.is_approved && handleStatusChange(s.site_id, true)}
-                            >
-                              ✓ Approve
-                            </button>
-                            <button
-                              style={{
-                                display: 'block',
-                                width: '100%',
-                                padding: '10px 15px',
-                                border: 'none',
-                                background: 'white',
-                                textAlign: 'left',
-                                cursor: (!s.is_approved && s.status === 'rejected') ? 'default' : 'pointer',
-                                color: (!s.is_approved && s.status === 'rejected') ? '#ccc' : '#ff4d4f',
-                                fontSize: '14px',
-                                fontWeight: '500'
-                              }}
-                              onClick={() => (s.is_approved || s.status !== 'rejected') && handleStatusChange(s.site_id, false)}
-                            >
-                              ✕ Reject
-                            </button>
-                            <div style={{ height: '1px', background: '#f0f0f0', margin: '4px 0' }}></div>
-                            <button
-                              style={{
-                                display: 'block',
-                                width: '100%',
-                                padding: '10px 15px',
-                                border: 'none',
-                                background: 'white',
-                                textAlign: 'left',
-                                cursor: 'pointer',
-                                color: '#ff4d4f',
-                                fontSize: '14px',
-                                fontWeight: '500'
-                              }}
-                              onClick={() => {
-                                setActionDropdown(null);
-                                handleDelete(s.site_id);
-                              }}
-                            >
-                              🗑 Delete
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </td>
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{t('th_id')}</th>
+                  <th>{t('th_site_name')}</th>
+                  <th>{t('th_researcher')}</th>
+                  <th>{t('th_approved')}</th>
+                  <th>{t('th_actions')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sites.map((s, index) => (
+                  <tr key={`${s.site_id}-${index}`}>
+                    <td>{s.site_id}</td>
+                    <td>{s.site_name}</td>
+                    <td>{getResearcherName(s)}</td>
+                    <td>
+                      <span style={{
+                        color: s.status === 'rejected' ? '#ff4d4f' : (s.is_approved ? '#52c41a' : '#fa8c16'),
+                        fontWeight: 'bold'
+                      }}>
+                        {s.status === 'rejected' ? t('status_rejected') : (s.is_approved ? t('dash_approved') : t('dash_pending'))}
+                      </span>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                        <button className="btn-sm" onClick={() => setViewSite(s)}>{t('btn_view')}</button>
+
+                        <div className="action-dropdown-container">
+                          <button
+                            className="action-menu-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActionDropdown(actionDropdown === index ? null : index);
+                            }}
+                          >
+                            {t('btn_edit')} <span>▼</span>
+                          </button>
+                          {actionDropdown === index && (
+                            <div
+                              className="action-menu-content"
+                              onClick={(e) => e.stopPropagation()}
+                              style={{
+                                top: index >= sites.length - 3 ? 'auto' : '100%',
+                                bottom: index >= sites.length - 3 ? '100%' : 'auto'
+                              }}
+                            >
+                              <button
+                                className={`action-menu-item ${s.is_approved ? '' : 'activate'}`}
+                                style={s.is_approved ? { color: '#ccc', cursor: 'default' } : {}}
+                                onClick={() => !s.is_approved && handleStatusChange(s.site_id, true)}
+                              >
+                                ✓ {t('btn_approve')}
+                              </button>
+                              <button
+                                className={`action-menu-item ${(!s.is_approved && s.status === 'rejected') ? '' : 'danger'}`}
+                                style={(!s.is_approved && s.status === 'rejected') ? { color: '#ccc', cursor: 'default' } : {}}
+                                onClick={() => (s.is_approved || s.status !== 'rejected') && handleStatusChange(s.site_id, false)}
+                              >
+                                ✕ {t('btn_reject')}
+                              </button>
+                              <button
+                                className="action-menu-item danger"
+                                style={{ borderTop: '1px solid var(--border-color)' }}
+                                onClick={() => {
+                                  setActionDropdown(null);
+                                  handleDelete(s.site_id);
+                                }}
+                              >
+                                🗑 {t('btn_delete')}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
       </main>
 
       {viewSite && (
-        <AdminModal title="Site Details" onClose={() => setViewSite(null)}>
+        <AdminModal title={t('modal_site_details')} onClose={() => setViewSite(null)}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {viewSite.image && (
               <img
@@ -194,34 +162,37 @@ export default function AdminSites() {
               />
             )}
             <div>
-              <label style={{ fontWeight: 'bold', color: '#666' }}>Site Name</label>
-              <div style={{ fontSize: '1.1rem' }}>{viewSite.site_name}</div>
+              <label style={{ fontWeight: 'bold', color: 'var(--text-secondary)' }}>{t('lbl_site_name')}</label>
+              <div style={{ fontSize: '1.1rem', color: 'var(--text-primary)' }}>{viewSite.site_name}</div>
             </div>
             <div>
-              <label style={{ fontWeight: 'bold', color: '#666' }}>Location</label>
-              <div>{viewSite.location}</div>
+              <label style={{ fontWeight: 'bold', color: 'var(--text-secondary)' }}>{t('lbl_location')}</label>
+              <div style={{ color: 'var(--text-primary)' }}>{viewSite.location}</div>
             </div>
             <div>
-              <label style={{ fontWeight: 'bold', color: '#666' }}>Description</label>
-              <div style={{ lineHeight: '1.5' }}>{viewSite.description}</div>
+              <label style={{ fontWeight: 'bold', color: 'var(--text-secondary)' }}>{t('lbl_description')}</label>
+              <div style={{ lineHeight: '1.5', color: 'var(--text-primary)' }}>{viewSite.description}</div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               <div>
-                <label style={{ fontWeight: 'bold', color: '#666' }}>Entry Price</label>
-                <div>{viewSite.price} ETB</div>
+                <label style={{ fontWeight: 'bold', color: 'var(--text-secondary)' }}>{t('lbl_price')}</label>
+                <div style={{ color: 'var(--text-primary)' }}>{viewSite.price} ETB</div>
               </div>
               <div>
-                <label style={{ fontWeight: 'bold', color: '#666' }}>Site Agent Fee</label>
-                <div>{viewSite.guide_fee} ETB</div>
+                <label style={{ fontWeight: 'bold', color: 'var(--text-secondary)' }}>{t('lbl_agent_fee')}</label>
+                <div style={{ color: 'var(--text-primary)' }}>{viewSite.guide_fee} ETB</div>
               </div>
             </div>
             <div>
-              <label style={{ fontWeight: 'bold', color: '#666' }}>Status</label>
+              <label style={{ fontWeight: 'bold', color: 'var(--text-secondary)' }}>{t('th_status')}</label>
               <div>
                 <span className={`status-badge status-${viewSite.is_approved ? 'approved' : 'pending'}`}>
-                  {viewSite.is_approved ? 'Approved' : 'Pending Approval'}
+                  {viewSite.is_approved ? t('dash_approved') : t('status_pending_approval')}
                 </span>
               </div>
+            </div>
+            <div style={{ marginTop: 20, textAlign: 'right' }}>
+              <button className="btn-primary" onClick={() => setViewSite(null)}>{t('btn_close')}</button>
             </div>
           </div>
         </AdminModal>

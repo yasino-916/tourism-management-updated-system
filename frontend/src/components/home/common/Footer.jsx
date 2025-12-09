@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../../context/LanguageContext';
 import '../styles/components/Footer.css';
 
 function Footer() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
 
   const handleSubscribe = (e) => {
@@ -22,7 +24,7 @@ function Footer() {
               <h2>Tourism MS</h2>
             </div>
             <p className="footer-description">
-              Welcome to Ethiopia, the Land of Origins! Ethiopia invites you to discover why it is the origin of so much! As you explore this ancient land, you will be put in touch with your own origins... for this is the Land of Origins!
+              {t('footer_desc')}
             </p>
             <div className="social-icons">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
@@ -42,17 +44,17 @@ function Footer() {
 
           {/* Middle Column - Newsletter */}
           <div className="footer-newsletter">
-            <h3>Newsletter Subscribe</h3>
-            <p>Sign up for our mailing list to get latest updates and offers.</p>
+            <h3>{t('footer_newsletter_title')}</h3>
+            <p>{t('footer_newsletter_desc')}</p>
             <form onSubmit={handleSubscribe} className="newsletter-form">
               <input
                 type="email"
-                placeholder="Your Email"
+                placeholder={t('footer_email_ph')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <button type="submit">Subscribe</button>
+              <button type="submit">{t('footer_subscribe_btn')}</button>
             </form>
           </div>
 
@@ -68,7 +70,7 @@ function Footer() {
 
       {/* Copyright Bar */}
       <div className="footer-copyright">
-        <p>© {new Date().getFullYear()} Powered By Tourism MS. All rights reserved</p>
+        <p>© {new Date().getFullYear()} {t('footer_copyright')}</p>
       </div>
     </footer>
   );

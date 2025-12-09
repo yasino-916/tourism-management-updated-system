@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './researcher.css';
 import { addSite, updateSite } from './researcherService';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function ManageSiteModal({ site, researcherId, onClose, onSaved }) {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     site_name: '',
     location: '',
@@ -46,8 +48,6 @@ export default function ManageSiteModal({ site, researcherId, onClose, onSaved }
       const payload = {
         ...formData,
         researcher_id: researcherId,
-        // If editing, keep existing approval status (or reset to false if significant changes? Requirement says updates must be approved)
-        // For now, let's say updates reset approval to false
         is_approved: false
       };
 
@@ -58,7 +58,7 @@ export default function ManageSiteModal({ site, researcherId, onClose, onSaved }
       }
       onSaved();
     } catch (err) {
-      alert('Error saving site: ' + err.message);
+      alert(t('msg_save_error') + ': ' + err.message);
     } finally {
       setSubmitting(false);
     }
@@ -68,49 +68,49 @@ export default function ManageSiteModal({ site, researcherId, onClose, onSaved }
     <div className="admin-modal-backdrop" onClick={onClose}>
       <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '800px' }}>
         <div className="admin-modal-header">
-          <h3>{site ? 'Edit Site Content' : 'Add New Site Content'}</h3>
+          <h3>{site ? t('modal_edit_site') : t('btn_add_new_site')}</h3>
           <button className="btn-ghost" onClick={onClose} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
         </div>
         <div className="admin-modal-body" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
           <form onSubmit={handleSubmit}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
-                <label>Site Name</label>
+                <label>{t('lbl_site_name')}</label>
                 <input name="site_name" value={formData.site_name} onChange={handleChange} required />
               </div>
               <div>
-                <label>Category</label>
+                <label>{t('lbl_category')}</label>
                 <select name="category" value={formData.category} onChange={handleChange}>
-                  <option>Historical Site</option>
-                  <option>Cultural Site</option>
-                  <option>Natural Attraction</option>
+                  <option value="Historical Site">{t('cat_historical')}</option>
+                  <option value="Cultural Site">{t('cat_cultural')}</option>
+                  <option value="Natural Attraction">{t('cat_natural')}</option>
                 </select>
               </div>
               <div>
-                <label>Region / City</label>
+                <label>{t('lbl_region')}</label>
                 <input name="region" value={formData.region} onChange={handleChange} required />
               </div>
               <div>
-                <label>Location (Address/Coordinates)</label>
+                <label>{t('lbl_location')}</label>
                 <input name="location" value={formData.location} onChange={handleChange} required />
               </div>
               <div>
-                <label>Suggested Visit Price (ETB)</label>
+                <label>{t('lbl_price')}</label>
                 <input name="price" type="number" value={formData.price} onChange={handleChange} />
               </div>
               <div>
-                <label>Est. Visit Duration</label>
-                <input name="visit_duration" value={formData.visit_duration} onChange={handleChange} placeholder="e.g. 2 hours" />
+                <label>{t('lbl_visit_duration')}</label>
+                <input name="visit_duration" value={formData.visit_duration} onChange={handleChange} placeholder={t('ph_duration')} />
               </div>
             </div>
 
-            <label>Full Description (History, Culture, Significance)</label>
+            <label>{t('lbl_description')}</label>
             <textarea name="description" value={formData.description} onChange={handleChange} rows={6} required />
 
-            <label>Nearby Attractions</label>
-            <input name="nearby_attractions" value={formData.nearby_attractions} onChange={handleChange} placeholder="Comma separated" />
+            <label>{t('lbl_nearby')}</label>
+            <input name="nearby_attractions" value={formData.nearby_attractions} onChange={handleChange} placeholder={t('ph_comma_sep')} />
 
-            <label>Site Image</label>
+            <label>{t('lbl_site_image')}</label>
             <div style={{ border: '1px dashed #ccc', padding: '15px', borderRadius: '8px', textAlign: 'center', background: '#f9f9f9' }}>
               {formData.image ? (
                 <div style={{ position: 'relative' }}>
@@ -123,7 +123,7 @@ export default function ManageSiteModal({ site, researcherId, onClose, onSaved }
                 </div>
               ) : (
                 <div style={{ padding: '20px' }}>
-                  <p style={{ margin: '0 0 10px 0', color: '#666' }}>Drag and drop or click to upload</p>
+                  <p style={{ margin: '0 0 10px 0', color: '#666' }}>{t('lbl_upload_drag')}</p>
                   <input
                     type="file"
                     accept="image/*"
@@ -142,7 +142,7 @@ export default function ManageSiteModal({ site, researcherId, onClose, onSaved }
               )}
             </div>
 
-            <label style={{ marginTop: '15px', display: 'block' }}>Map Location URL (Optional)</label>
+            <label style={{ marginTop: '15px', display: 'block' }}>{t('lbl_map_url')}</label>
             <input
               name="map_url"
               value={formData.map_url || ''}
@@ -151,9 +151,9 @@ export default function ManageSiteModal({ site, researcherId, onClose, onSaved }
             />
 
             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-              <button type="button" className="btn-outline" onClick={onClose}>Cancel</button>
+              <button type="button" className="btn-outline" onClick={onClose}>{t('btn_cancel')}</button>
               <button type="submit" className="btn-primary" disabled={submitting}>
-                {submitting ? 'Saving...' : (site ? 'Submit Update' : 'Submit for Approval')}
+                {submitting ? t('btn_adding') : (site ? t('btn_submit_update') : t('btn_submit_approval'))}
               </button>
             </div>
           </form>

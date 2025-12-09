@@ -114,6 +114,87 @@
     box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color, #e2e8f0);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.language-toggle:hover {
+    background: var(--bg-secondary, #f8f9fa);
+    border-color: var(--accent-primary);
+}
+
+.language-arrow {
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+.language-dropdown {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: var(--bg-primary, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    padding: 6px;
+    min-width: 140px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.2s ease;
+    z-index: 1000;
+}
+
+.language-dropdown button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.language-dropdown button:hover {
+    background: var(--bg-secondary, #f8f9fa);
+    color: var(--accent-primary);
+}
+
+.language-dropdown button.active {
+    background: var(--accent-primary);
+    color: #ffffff;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Mobile Menu Toggle Button (Hamburger) */
 .mobile-menu-toggle {
     display: none;
@@ -243,4 +324,18 @@
     background: rgba(17, 24, 39, 0.85);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme='dark'] .language-toggle {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .language-dropdown {
+    background: rgba(17, 24, 39, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='dark'] .language-dropdown button:hover {
+    background: rgba(255, 255, 255, 0.1);
 }

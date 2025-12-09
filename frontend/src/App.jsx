@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LanguageProvider } from './context/LanguageContext';
 import Home from './components/home/Home';
 import Login from './components/home/pages/Login';
 import Register from './components/home/pages/Register';
@@ -39,47 +40,49 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot" element={<Forgot />} />
-          
-          {/* Admin routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-          <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
-          <Route path="/admin/sites" element={<AdminRoute><AdminSites /></AdminRoute>} />
-          <Route path="/admin/requests" element={<AdminRoute><AdminRequests /></AdminRoute>} />
-          <Route path="/admin/payments" element={<AdminRoute><AdminPayments /></AdminRoute>} />
-          <Route path="/admin/reports" element={<AdminRoute><AdminReports /></AdminRoute>} />
-          <Route path="/admin/profile" element={<AdminRoute><AdminProfile /></AdminRoute>} />
+    <LanguageProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot" element={<Forgot />} />
 
-          {/* Researcher routes */}
-          <Route path="/researcher/dashboard" element={<ResearcherRoute><ResearcherDashboard /></ResearcherRoute>} />
-          <Route path="/researcher/sites" element={<ResearcherRoute><ResearcherSites /></ResearcherRoute>} />
-          <Route path="/researcher/profile" element={<ResearcherRoute><ResearcherProfile /></ResearcherRoute>} />
+            {/* Admin routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+            <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+            <Route path="/admin/sites" element={<AdminRoute><AdminSites /></AdminRoute>} />
+            <Route path="/admin/requests" element={<AdminRoute><AdminRequests /></AdminRoute>} />
+            <Route path="/admin/payments" element={<AdminRoute><AdminPayments /></AdminRoute>} />
+            <Route path="/admin/reports" element={<AdminRoute><AdminReports /></AdminRoute>} />
+            <Route path="/admin/profile" element={<AdminRoute><AdminProfile /></AdminRoute>} />
 
-          {/* Guide routes */}
-          <Route path="/guide/dashboard" element={<GuideRoute><GuideDashboard /></GuideRoute>} />
-          <Route path="/guide/requests" element={<GuideRoute><GuideRequests /></GuideRoute>} />
-          <Route path="/guide/schedule" element={<GuideRoute><GuideSchedule /></GuideRoute>} />
-          <Route path="/guide/reports" element={<GuideRoute><GuideReports /></GuideRoute>} />
-          <Route path="/guide/profile" element={<GuideRoute><GuideProfile /></GuideRoute>} />
+            {/* Researcher routes */}
+            <Route path="/researcher/dashboard" element={<ResearcherRoute><ResearcherDashboard /></ResearcherRoute>} />
+            <Route path="/researcher/sites" element={<ResearcherRoute><ResearcherSites /></ResearcherRoute>} />
+            <Route path="/researcher/profile" element={<ResearcherRoute><ResearcherProfile /></ResearcherRoute>} />
 
-          {/* Visitor routes */}
-          <Route path="/visitor/dashboard" element={<VisitorRoute><VisitorDashboard /></VisitorRoute>} />
-          <Route path="/visitor/sites" element={<VisitorRoute><ExploreSites /></VisitorRoute>} />
-          <Route path="/visitor/sites/:id" element={<VisitorRoute><SiteDetails /></VisitorRoute>} />
-          <Route path="/visitor/request-guide/:siteId" element={<VisitorRoute><RequestGuide /></VisitorRoute>} />
-          <Route path="/visitor/payments" element={<VisitorRoute><VisitorPayments /></VisitorRoute>} />
-          <Route path="/visitor/history" element={<VisitorRoute><VisitorHistory /></VisitorRoute>} />
-          <Route path="/visitor/profile" element={<VisitorRoute><VisitorProfile /></VisitorRoute>} />
-        </Routes>
-      </div>
-    </Router>
+            {/* Guide routes */}
+            <Route path="/guide/dashboard" element={<GuideRoute><GuideDashboard /></GuideRoute>} />
+            <Route path="/guide/requests" element={<GuideRoute><GuideRequests /></GuideRoute>} />
+            <Route path="/guide/schedule" element={<GuideRoute><GuideSchedule /></GuideRoute>} />
+            <Route path="/guide/reports" element={<GuideRoute><GuideReports /></GuideRoute>} />
+            <Route path="/guide/profile" element={<GuideRoute><GuideProfile /></GuideRoute>} />
+
+            {/* Visitor routes */}
+            <Route path="/visitor/dashboard" element={<VisitorRoute><VisitorDashboard /></VisitorRoute>} />
+            <Route path="/visitor/sites" element={<VisitorRoute><ExploreSites /></VisitorRoute>} />
+            <Route path="/visitor/sites/:id" element={<VisitorRoute><SiteDetails /></VisitorRoute>} />
+            <Route path="/visitor/request-guide/:siteId" element={<VisitorRoute><RequestGuide /></VisitorRoute>} />
+            <Route path="/visitor/payments" element={<VisitorRoute><VisitorPayments /></VisitorRoute>} />
+            <Route path="/visitor/history" element={<VisitorRoute><VisitorHistory /></VisitorRoute>} />
+            <Route path="/visitor/profile" element={<VisitorRoute><VisitorProfile /></VisitorRoute>} />
+          </Routes>
+        </div>
+      </Router>
+    </LanguageProvider>
   );
 }
 

@@ -117,9 +117,9 @@ export const verifyPayment = async (paymentId) => {
   return await api.patch(`/payments/${paymentId}/verify`, {});
 };
 
-export const changePassword = async (_username, newPassword) => {
-  // There is no dedicated admin change password endpoint; reuse profile update
-  return await api.patch('/users/me', { password: newPassword });
+export const changePassword = async (_username, currentPassword, newPassword) => {
+  // Pass both current and new password to allow backend validation if implemented
+  return await api.patch('/users/me', { password: newPassword, current_password: currentPassword });
 };
 
 export const updateProfile = async (_username, data) => {

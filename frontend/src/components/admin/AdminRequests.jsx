@@ -3,9 +3,10 @@ import AdminSidebar from './AdminSidebar';
 import './admin.css';
 import { getRequests, getPayments, approveRequest, rejectRequest, assignGuide } from './adminService';
 import ThemeToggle from '../common/ThemeToggle';
-
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function AdminRequests() {
+  const { t } = useLanguage();
   const [requests, setRequests] = useState([]);
   const [assigningId, setAssigningId] = useState(null);
   const [guideIdInput, setGuideIdInput] = useState('');
@@ -24,21 +25,28 @@ export default function AdminRequests() {
   };
 
   const formatStatus = (status) => {
-    if (status === 'accepted_by_guide') return 'Accepted';
-    return status.charAt(0).toUpperCase() + status.slice(1);
+    switch (status) {
+      case 'accepted_by_guide': return t('status_accepted');
+      case 'rejected_by_guide': return t('status_rejected_by_guide');
+      case 'assigned': return t('status_assigned');
+      case 'approved': return t('dash_approved');
+      case 'pending': return t('dash_pending');
+      case 'rejected': return t('status_rejected');
+      default: return status;
+    }
   };
 
   const handleApprove = async (id) => {
     const hasVerifiedPayment = payments.some(p => p.request_id === id && p.payment_status === 'confirmed');
     if (!hasVerifiedPayment) {
-      alert('Visitor has not paid or payment is not verified by Admin. Please verify payment before approving.');
+      alert(t('msg_payment_not_verified'));
       return;
     }
-    try { await approveRequest(id); refresh(); } catch (err) { alert('Approve failed: ' + err.message); }
+    try { await approveRequest(id); refresh(); } catch (err) { alert(t('msg_update_fail') + ': ' + err.message); }
   };
 
   const handleReject = async (id) => {
-    try { await rejectRequest(id); refresh(); } catch (err) { alert('Reject failed: ' + err.message); }
+    try { await rejectRequest(id); refresh(); } catch (err) { alert(t('msg_update_fail') + ': ' + err.message); }
   };
 
   const startAssign = (id) => {
@@ -48,21 +56,29 @@ export default function AdminRequests() {
 
   const submitAssign = async (id) => {
     if (!guideIdInput) return;
-    try { await assignGuide(id, { guide_id: parseInt(guideIdInput) }); refresh(); } catch (err) { alert('Assign failed: ' + err.message); }
+    try { await assignGuide(id, { guide_id: parseInt(guideIdInput) }); refresh(); } catch (err) { alert(t('msg_update_fail') + ': ' + err.message); }
   };
 
   return (
     <div className="admin-layout">
       <AdminSidebar />
       <main className="admin-main">
-        <header className="admin-main-header" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <h1>Visitor Requests</h1>
+        <header className="admin-main-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1>{t('admin_visitor_requests')}</h1>
           <ThemeToggle />
         </header>
         <section className="panel">
           <table className="table">
             <thead>
-              <tr><th>ID</th><th>Visitor</th><th>Site</th><th>Date</th><th>People</th><th>Status</th><th>Actions</th></tr>
+              <tr>
+                <th>{t('th_id')}</th>
+                <th>{t('th_visitor')}</th>
+                <th>{t('th_site_name')}</th>
+                <th>{t('th_date')}</th>
+                <th>{t('th_group_size')}</th>
+                <th>{t('th_status')}</th>
+                <th>{t('th_actions')}</th>
+              </tr>
             </thead>
             <tbody>
               {requests.map(r => (
@@ -72,48 +88,48 @@ export default function AdminRequests() {
                   <td>{r.site_name}</td>
                   <td>{r.preferred_date}</td>
                   <td>{r.number_of_visitors}</td>
-                      <td>{formatStatus(r.request_status)}</td>
-                      <td>
-                        {r.request_status === 'pending' && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                            <button className="btn-sm" onClick={() => handleApprove(r.request_id)}>Approve</button>
-                            <button className="btn-sm btn-danger" onClick={() => handleReject(r.request_id)}>Reject</button>
-                          </div>
+                  <td>{formatStatus(r.request_status)}</td>
+                  <td>
+                    {r.request_status === 'pending' && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <button className="btn-sm" onClick={() => handleApprove(r.request_id)}>{t('btn_approve')}</button>
+                        <button className="btn-sm btn-danger" onClick={() => handleReject(r.request_id)}>{t('btn_reject')}</button>
+                      </div>
+                    )}
+                    {r.request_status === 'approved' && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        {assigningId === r.request_id ? (
+                          <>
+                            <input
+                              type="number"
+                              placeholder={t('th_id')}
+                              value={guideIdInput}
+                              onChange={e => setGuideIdInput(e.target.value)}
+                              style={{ width: '60px', padding: '4px', margin: 0, fontSize: '0.8rem' }}
+                            />
+                            <button className="btn-sm" onClick={() => submitAssign(r.request_id)}>{t('btn_save')}</button>
+                            <button className="btn-sm btn-outline" onClick={() => setAssigningId(null)} style={{ padding: '4px 8px' }}>✕</button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              className="btn-sm"
+                              style={{ fontSize: '0.75rem', padding: '4px 8px' }}
+                              onClick={() => startAssign(r.request_id)}
+                            >
+                              {t('btn_assign_agent')}
+                            </button>
+                            <button className="btn-sm btn-danger" onClick={() => handleReject(r.request_id)}>{t('btn_reject')}</button>
+                          </>
                         )}
-                        {r.request_status === 'approved' && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                            {assigningId === r.request_id ? (
-                              <>
-                                <input 
-                                  type="number" 
-                                  placeholder="ID" 
-                                  value={guideIdInput} 
-                                  onChange={e => setGuideIdInput(e.target.value)}
-                                  style={{ width: '60px', padding: '4px', margin: 0, fontSize: '0.8rem' }}
-                                />
-                                <button className="btn-sm" onClick={() => submitAssign(r.request_id)}>Save</button>
-                                <button className="btn-sm btn-outline" onClick={() => setAssigningId(null)} style={{padding: '4px 8px'}}>✕</button>
-                              </>
-                            ) : (
-                              <>
-                                <button 
-                                  className="btn-sm" 
-                                  style={{ fontSize: '0.75rem', padding: '4px 8px' }}
-                                  onClick={() => startAssign(r.request_id)}
-                                >
-                                  Assign Site Agent
-                                </button>
-                                <button className="btn-sm btn-danger" onClick={() => handleReject(r.request_id)}>Reject</button>
-                              </>
-                            )}
-                          </div>
-                        )}
-                        {r.request_status === 'rejected' && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                            <button className="btn-sm" onClick={() => handleApprove(r.request_id)}>Approve</button>
-                          </div>
-                        )}
-                      </td>
+                      </div>
+                    )}
+                    {r.request_status === 'rejected' && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <button className="btn-sm" onClick={() => handleApprove(r.request_id)}>{t('btn_approve')}</button>
+                      </div>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

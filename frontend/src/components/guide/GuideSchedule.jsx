@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import GuideSidebar from './GuideSidebar';
 import ThemeToggle from '../common/ThemeToggle';
+import { useLanguage } from '../../context/LanguageContext';
 import './guide.css';
 import { guideService } from '../../services/guideService';
 
 export default function GuideSchedule() {
+  const { t } = useLanguage();
   const [schedule, setSchedule] = useState([]);
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'calendar'
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -88,21 +90,21 @@ export default function GuideSchedule() {
       <GuideSidebar />
       <main className="guide-main">
         <header className="guide-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1>My Schedule</h1>
+          <h1>{t('guide_schedule')}</h1>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button
               onClick={() => setViewMode('list')}
               className={`guide-btn ${viewMode === 'list' ? 'btn-primary' : ''}`}
               style={{ background: viewMode === 'list' ? '#1890ff' : 'white', color: viewMode === 'list' ? 'white' : '#333', border: '1px solid #ddd' }}
             >
-              List View
+              {t('btn_list_view')}
             </button>
             <button
               onClick={() => setViewMode('calendar')}
               className={`guide-btn ${viewMode === 'calendar' ? 'btn-primary' : ''}`}
               style={{ background: viewMode === 'calendar' ? '#1890ff' : 'white', color: viewMode === 'calendar' ? 'white' : '#333', border: '1px solid #ddd' }}
             >
-              Calendar View
+              {t('btn_calendar_view')}
             </button>
             <ThemeToggle />
           </div>
@@ -113,7 +115,7 @@ export default function GuideSchedule() {
             schedule.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '10px' }}>📅</div>
-                <p>No upcoming tours scheduled.</p>
+                <p>{t('msg_no_tours_scheduled')}</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -130,14 +132,14 @@ export default function GuideSchedule() {
                     <div>
                       <h3 style={{ margin: '0 0 5px' }}>{item.site_name}</h3>
                       <p style={{ margin: 0, color: '#666' }}>
-                        <strong>Date:</strong> {item.preferred_date} | <strong>Time:</strong> {item.preferred_time || '09:00 AM'}
+                        <strong>{t('th_date')}:</strong> {item.preferred_date} | <strong>Time:</strong> {item.preferred_time || '09:00 AM'}
                       </p>
                       <p style={{ margin: '5px 0 0', color: '#666' }}>
-                        <strong>Visitor:</strong> {item.visitor_name} ({item.group_size || item.number_of_visitors} people)
+                        <strong>{t('th_visitor')}:</strong> {item.visitor_name} ({item.group_size || item.number_of_visitors} people)
                       </p>
                     </div>
                     <div>
-                      <span className="status-badge status-accepted_by_guide">Confirmed</span>
+                      <span className="status-badge status-accepted_by_guide">{t('status_accepted')}</span>
                     </div>
                   </div>
                 ))}
@@ -147,11 +149,17 @@ export default function GuideSchedule() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <button onClick={() => changeMonth(-1)} style={{ border: 'none', background: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>&lt;</button>
-                <h2 style={{ margin: 0 }}>{currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
+                <h2 style={{ margin: 0 }}>{currentDate.toLocaleString(t('locale'), { month: 'long', year: 'numeric' })}</h2>
                 <button onClick={() => changeMonth(1)} style={{ border: 'none', background: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>&gt;</button>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '5px', textAlign: 'center', fontWeight: 'bold', marginBottom: '10px' }}>
-                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                <div>{t('day_sun')}</div>
+                <div>{t('day_mon')}</div>
+                <div>{t('day_tue')}</div>
+                <div>{t('day_wed')}</div>
+                <div>{t('day_thu')}</div>
+                <div>{t('day_fri')}</div>
+                <div>{t('day_sat')}</div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '5px' }}>
                 {renderCalendar()}

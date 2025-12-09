@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../../context/LanguageContext';
 
 function Hero() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="home"
@@ -48,7 +51,7 @@ function Hero() {
           textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
           fontFamily: "Georgia, 'Times New Roman', serif"
         }}>
-          Discover Historical Wonders
+          {t('hero_title')}
         </h1>
         <p style={{
           fontSize: '1.1rem',
@@ -59,9 +62,7 @@ function Hero() {
           marginLeft: 'auto',
           marginRight: 'auto'
         }}>
-          Experience the rich cultural heritage and historical sites with our
-          comprehensive tourism management system. Connect with expert site
-          agents and explore ancient treasures.
+          {t('hero_subtitle')}
         </p>
         <Link
           to="/register"
@@ -80,7 +81,7 @@ function Hero() {
           onMouseEnter={(e) => e.target.style.background = 'var(--accent-secondary)'}
           onMouseLeave={(e) => e.target.style.background = 'var(--accent-primary)'}
         >
-          Start Your Journey
+          {t('hero_cta')}
         </Link>
       </div>
     </section>
