@@ -1,171 +1,160 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 
 function Contact() {
-  const contactMethods = [
-    {
-      icon: '📧',
-      title: 'Email Support',
-      details: 'support@ethiotourism.com',
-      action: 'mailto:support@ethiotourism.com'
-    },
-    {
-      icon: '📞',
-      title: 'Phone',
-      details: '+251 9 61 74 18 06',
-      action: 'tel:+251961741806'
-    },
-    {
-      icon: '📍',
-      title: 'Headquarters',
-      details: 'Addis Ababa, Ethiopia',
-      action: null
-    }
-  ];
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Thank you ${formData.name}! We'll get back to you soon.`);
+    setFormData({ name: '', email: '', message: '' });
+  };
 
   return (
     <section id="contact" style={{
       padding: '100px 20px',
       background: 'var(--bg-primary)'
     }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <span style={{
-            color: 'var(--accent-primary)',
-            fontWeight: '600',
-            textTransform: 'uppercase',
-            fontSize: '0.9rem',
-            letterSpacing: '2px'
-          }}>Get In Touch</span>
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
           <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-            marginTop: '15px',
-            marginBottom: '20px',
+            fontSize: '32px',
+            fontWeight: '600',
             color: 'var(--text-primary)',
-            fontWeight: '800'
+            marginBottom: '15px'
           }}>
-            Contact Us
+            Sends us a Message
           </h2>
-          <p style={{
-            color: 'var(--text-secondary)',
-            maxWidth: '600px',
-            margin: '0 auto',
-            fontSize: '1.1rem',
-            lineHeight: '1.7'
-          }}>
-            Get in touch with our team for any questions or support regarding your Ethiopian adventure.
-          </p>
+          <div style={{
+            width: '60px',
+            height: '3px',
+            background: 'var(--accent-primary)',
+            margin: '0 auto'
+          }}></div>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '30px'
-        }}>
-          {contactMethods.map((method, index) => (
-            <div
-              key={index}
-              style={{
-                background: 'var(--card-bg)',
-                padding: '40px 30px',
-                borderRadius: '20px',
-                textAlign: 'center',
-                boxShadow: 'var(--card-shadow)',
-                border: '1px solid var(--border-color)',
-                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.1)';
-                e.currentTarget.style.borderColor = 'var(--accent-primary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'var(--card-shadow)';
-                e.currentTarget.style.borderColor = 'var(--border-color)';
-              }}
-            >
-              <div style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '50%',
-                background: 'var(--hover-bg)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '2rem',
-                margin: '0 auto 25px',
-                transition: 'all 0.3s ease',
-                color: 'var(--accent-primary)'
-              }}>
-                {method.icon}
-              </div>
-              <h3 style={{
-                fontSize: '1.25rem',
-                marginBottom: '10px',
-                color: 'var(--text-primary)',
-                fontWeight: '700'
-              }}>
-                {method.title}
-              </h3>
-              {method.action ? (
-                <a
-                  href={method.action}
-                  style={{
-                    color: 'var(--accent-primary)',
-                    textDecoration: 'none',
-                    fontSize: '1rem',
-                    fontWeight: '500'
-                  }}
-                >
-                  {method.details}
-                </a>
-              ) : (
-                <p style={{
-                  color: 'var(--text-secondary)',
-                  fontSize: '1rem',
-                  margin: 0
-                }}>
-                  {method.details}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div style={{
-          marginTop: '60px',
-          textAlign: 'center',
+        {/* Contact Form */}
+        <form onSubmit={handleSubmit} style={{
+          background: 'var(--card-bg)',
           padding: '40px',
-          background: 'var(--gradient-main)',
-          borderRadius: '20px',
-          color: 'white'
+          borderRadius: '12px',
+          boxShadow: 'var(--card-shadow)'
         }}>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', fontWeight: '700' }}>
-            Ready to Start Your Journey?
-          </h3>
-          <p style={{ marginBottom: '25px', opacity: 0.9 }}>
-            Join thousands of travelers exploring Ethiopia's rich heritage.
-          </p>
-          <a
-            href="/register"
+          {/* Name and Email Row */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '20px',
+            marginBottom: '20px'
+          }}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              style={{
+                padding: '14px 16px',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '15px',
+                outline: 'none',
+                transition: 'border-color 0.3s ease',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-primary)'
+              }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
+              onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              style={{
+                padding: '14px 16px',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '15px',
+                outline: 'none',
+                transition: 'border-color 0.3s ease',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-primary)'
+              }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
+              onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+            />
+          </div>
+
+          {/* Message Textarea */}
+          <textarea
+            name="message"
+            placeholder="Message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            rows="6"
             style={{
-              display: 'inline-block',
-              background: 'white',
-              color: 'var(--accent-primary)',
+              width: '100%',
+              padding: '14px 16px',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              fontSize: '15px',
+              outline: 'none',
+              transition: 'border-color 0.3s ease',
+              marginBottom: '25px',
+              resize: 'vertical',
+              fontFamily: 'inherit',
+              background: 'var(--bg-primary)',
+              color: 'var(--text-primary)'
+            }}
+            onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
+            onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
+          />
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            style={{
               padding: '14px 32px',
-              borderRadius: '12px',
-              textDecoration: 'none',
+              background: 'var(--accent-primary)',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '15px',
               fontWeight: '600',
-              fontSize: '1rem',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-              transition: 'transform 0.3s ease'
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'var(--accent-secondary)';
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'var(--accent-primary)';
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
             }}
           >
-            Get Started Today →
-          </a>
-        </div>
+            Send Message
+          </button>
+        </form>
       </div>
     </section>
   );
