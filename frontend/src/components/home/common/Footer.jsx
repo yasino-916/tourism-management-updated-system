@@ -34,8 +34,8 @@ function Footer() {
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                <i className="fab fa-twitter"></i>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="X">
+                <i className="fab fa-x-twitter"></i>
               </a>
             </div>
           </div>
@@ -59,7 +59,7 @@ function Footer() {
           {/* Right Column - Image */}
           <div className="footer-image">
             <img
-              src="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=400&h=300&fit=crop"
+              src="https://media.licdn.com/dms/image/v2/C4D12AQE-m1-nr8-How/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1526892052518?e=2147483647&v=beta&t=92tghX60UuFdYT_PnK97ieedz2SLiA4cbW6SU84oemU"
               alt="Ethiopian Historical Sites"
             />
           </div>
