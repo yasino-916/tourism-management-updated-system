@@ -94,21 +94,44 @@ function Features() {
                 borderRadius: '16px',
                 boxShadow: 'var(--card-shadow)',
                 border: '1px solid var(--border-color)',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.borderColor = feature.color;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'var(--card-shadow)';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
               }}
             >
               <div style={{
                 width: '70px',
                 height: '70px',
                 borderRadius: '16px',
-                background: `${feature.color}15`, // Keeping opacity for icon bg
+                background: `${feature.color}15`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '2rem',
                 marginBottom: '25px',
-                color: feature.color === 'var(--accent-primary)' ? 'var(--accent-primary)' : feature.color
-              }}>
+                color: feature.color === 'var(--accent-primary)' ? 'var(--accent-primary)' : feature.color,
+                transition: 'all 0.3s ease'
+              }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
+                  e.currentTarget.style.background = feature.color === 'var(--accent-primary)' ? 'var(--accent-primary)' : feature.color;
+                  e.currentTarget.style.color = '#ffffff';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                  e.currentTarget.style.background = `${feature.color}15`;
+                  e.currentTarget.style.color = feature.color === 'var(--accent-primary)' ? 'var(--accent-primary)' : feature.color;
+                }}
+              >
                 {feature.icon}
               </div>
               <h3 style={{
