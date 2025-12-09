@@ -59,8 +59,8 @@ function Footer() {
           {/* Right Column - Image */}
           <div className="footer-image">
             <img
-              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop"
-              alt="Ethiopian Coffee"
+              src="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=400&h=300&fit=crop"
+              alt="Ethiopian Historical Sites"
             />
           </div>
         </div>
