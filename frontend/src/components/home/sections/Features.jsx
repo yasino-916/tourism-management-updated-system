@@ -95,7 +95,8 @@ function Features() {
                 boxShadow: 'var(--card-shadow)',
                 border: '1px solid var(--border-color)',
                 transition: 'all 0.3s ease',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textAlign: 'center'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-8px)';
@@ -118,6 +119,7 @@ function Features() {
                 justifyContent: 'center',
                 fontSize: '2rem',
                 marginBottom: '25px',
+                margin: '0 auto 25px',
                 color: feature.color === 'var(--accent-primary)' ? 'var(--accent-primary)' : feature.color,
                 transition: 'all 0.3s ease'
               }}
