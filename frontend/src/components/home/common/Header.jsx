@@ -79,7 +79,7 @@ function Header() {
           </button>
         </div>
       </div>
-    </header>
+    </header >
   );
 }
 
