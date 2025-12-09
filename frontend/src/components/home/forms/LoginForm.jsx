@@ -68,13 +68,23 @@ function LoginForm() {
         <ThemeToggle />
       </div>
 
-      <div className="logo">
-        <h1>Tourism Management System</h1>
-        <p>Explore historical sites with expert guidance</p>
-      </div>
-
       <div className="login-box">
-        <h2>Sign In</h2>
+        <h2 style={{
+          textAlign: 'center',
+          marginBottom: '10px',
+          fontSize: '24px',
+          color: 'var(--text-primary)'
+        }}>
+          Sign In
+        </h2>
+        <p style={{
+          textAlign: 'center',
+          color: 'var(--text-secondary)',
+          marginBottom: '25px',
+          fontSize: '14px'
+        }}>
+          Welcome back! Please login to your account
+        </p>
         {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
