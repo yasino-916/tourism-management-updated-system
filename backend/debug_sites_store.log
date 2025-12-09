@@ -1,0 +1,300 @@
+[2025-12-09 09:12:19] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjgsInJvbGUiOiJyZXNlYXJjaGVyIiwiZW1haWwiOiJyZXNAZ21haWwuY29tIiwiaWF0IjoxNzY1MjY3ODU0LCJleHAiOjE3NjU4NzI2NTR9.f63Y6pw3gDEBJjzSn0Irqd46yQD2CpRhEpn1VlC1FgM
+Body: Array
+(
+    [site_name] => vbn
+    [location] => ssf
+    [description] => gh
+    [price] => 45
+    [image] => blob:http://localhost:3000/5f049c4b-f297-4d50-9752-b33c6efe2750
+    [category] => Historical Site
+    [region] => ryt
+    [visit_duration] => 4
+    [nearby_attractions] => gh
+    [map_url] => 
+    [researcher_id] => 8
+    [is_approved] => 
+)
+
+[2025-12-09 09:22:05] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsInJvbGUiOiJyZXNlYXJjaGVyIiwiZW1haWwiOiJyZXNlYXJjaGVyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzY1MjY4NDQyLCJleHAiOjE3NjU4NzMyNDJ9.1hW7elauzHQzi1iT80RAthXd1UYd8CNJJdFAI_C-SB4
+Body: Array
+(
+    [site_name] => Axum Obelisk Modern
+    [location] => Axum
+    [description] => Ancient stele in the city of Axum.
+    [price] => 200
+    [image] => 
+    [category] => Historical Site
+    [region] => Tigray
+    [visit_duration] => 
+    [nearby_attractions] => 
+    [map_url] => 
+    [researcher_id] => 4
+    [is_approved] => 
+)
+
+[2025-12-09 10:54:54] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInJvbGUiOiJyZXNlYXJjaGVyIiwiZW1haWwiOiJ5QGdtYWlsLmNvbSIsImlhdCI6MTc2NTI3NDA2NCwiZXhwIjoxNzY1ODc4ODY0fQ.BPJqu3XlPAzuUBN265gGuBtvpKUJon2-ykjeZ9-D6Cg
+Body: Array
+(
+    [site_name] => Axum Obelisk Modern
+    [location] => Axum
+    [description] => gdh
+    [price] => 453
+    [image] => blob:http://localhost:3000/24214ef4-30e3-4ae2-8250-f5c1cd276d55
+    [category] => Historical Site
+    [region] => Tigray
+    [visit_duration] => 4
+    [nearby_attractions] => ds
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:04:31] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInJvbGUiOiJyZXNlYXJjaGVyIiwiZW1haWwiOiJ5QGdtYWlsLmNvbSIsImlhdCI6MTc2NTI3NDY0MSwiZXhwIjoxNzY1ODc5NDQxfQ.a4Ix0X2ZK3EzcS4D4a5UVRegpqC50FosgkwzUm4tGV0
+Body: Array
+(
+    [site_name] => Axum Obelisk Modern
+    [location] => Axum
+    [description] => dghjf
+    [price] => 755
+    [image] => blob:http://localhost:3000/eaccdb8f-5847-498a-88c6-f917f08d571e
+    [category] => Historical Site
+    [region] => Tigray
+    [visit_duration] => 4
+    [nearby_attractions] => g
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:10:51] Auth: Bearer MockToken
+Body: Array
+(
+    [site_name] => Test Site
+    [location] => Test Loc
+    [description] => Desc
+    [price] => 100
+    [category] => Historical
+    [region] => TestRegion
+)
+
+[2025-12-09 11:11:48] Auth: Bearer MockToken
+Body: Array
+(
+    [site_name] => Test Site
+    [location] => Test Loc
+    [description] => Desc
+    [price] => 100
+    [category] => Historical
+    [region] => TestRegion
+)
+
+[2025-12-09 11:12:18] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUyNzUxMzgsImV4cCI6MTc2NTg3OTkzOH0.byDQBnXe57EPGxCF2uCoOmYPUAzjSMx7igZAbY2IwbA
+Body: Array
+(
+    [site_name] => Restored Site demo
+    [location] => Addis Ababa
+    [description] => A demo site restored by the system assistant.
+    [price] => 150
+    [category] => Cultural
+    [region] => Addis Ababa
+)
+
+[2025-12-09 11:12:18] Input: Array
+(
+    [site_name] => Restored Site demo
+    [location] => Addis Ababa
+    [description] => A demo site restored by the system assistant.
+    [price] => 150
+    [category] => Cultural
+    [region] => Addis Ababa
+)
+
+[2025-12-09 11:12:18] SQL: INSERT INTO `Sites` (`site_name`, `location_address`, `full_description`, `visit_price`, `category_id`, `region_id`, `short_description`, `is_approved`, `created_by`) VALUES (:site_name, :location_address, :full_description, :visit_price, :category_id, :region_id, :short_description, :is_approved, :created_by)
+Data: Array
+(
+    [site_name] => Restored Site demo
+    [location_address] => Addis Ababa
+    [full_description] => A demo site restored by the system assistant.
+    [visit_price] => 150
+    [category_id] => Cultural
+    [region_id] => Addis Ababa
+    [short_description] => A demo site restored by the system assistant.
+    [is_approved] => 
+    [created_by] => 1
+)
+
+[2025-12-09 11:13:13] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUyNzUxOTMsImV4cCI6MTc2NTg3OTk5M30.RejVMBup-TADkLnqLn39CxAe0IrZ8IrtGWxnBU9MT-o
+Body: Array
+(
+    [site_name] => Restored Site demo
+    [location] => Addis Ababa
+    [description] => A demo site restored by the system assistant.
+    [price] => 150
+    [category] => Cultural
+    [region] => Addis Ababa
+)
+
+[2025-12-09 11:13:13] Input: Array
+(
+    [site_name] => Restored Site demo
+    [location] => Addis Ababa
+    [description] => A demo site restored by the system assistant.
+    [price] => 150
+    [category] => Cultural
+    [region] => Addis Ababa
+)
+
+[2025-12-09 11:13:14] SQL: INSERT INTO `Sites` (`site_name`, `location_address`, `full_description`, `visit_price`, `short_description`, `is_approved`, `created_by`) VALUES (:site_name, :location_address, :full_description, :visit_price, :short_description, :is_approved, :created_by)
+Data: Array
+(
+    [site_name] => Restored Site demo
+    [location_address] => Addis Ababa
+    [full_description] => A demo site restored by the system assistant.
+    [visit_price] => 150
+    [short_description] => A demo site restored by the system assistant.
+    [is_approved] => 
+    [created_by] => 1
+)
+
+[2025-12-09 11:13:14] Success: ID 2
+[2025-12-09 11:15:00] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInJvbGUiOiJyZXNlYXJjaGVyIiwiZW1haWwiOiJ5QGdtYWlsLmNvbSIsImlhdCI6MTc2NTI3NDY0MSwiZXhwIjoxNzY1ODc5NDQxfQ.a4Ix0X2ZK3EzcS4D4a5UVRegpqC50FosgkwzUm4tGV0
+Body: Array
+(
+    [site_name] => Axum Obelisk Modern
+    [location] => ssf
+    [description] => gfsvj
+    [price] => 53
+    [image] => blob:http://localhost:3000/c3f01221-d6db-480e-bc1c-5dde8b2d119a
+    [category] => Historical Site
+    [region] => Tigray
+    [visit_duration] => 4
+    [nearby_attractions] => bnf
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:15:00] Input: Array
+(
+    [site_name] => Axum Obelisk Modern
+    [location] => ssf
+    [description] => gfsvj
+    [price] => 53
+    [image] => blob:http://localhost:3000/c3f01221-d6db-480e-bc1c-5dde8b2d119a
+    [category] => Historical Site
+    [region] => Tigray
+    [visit_duration] => 4
+    [nearby_attractions] => bnf
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:15:00] SQL: INSERT INTO `Sites` (`site_name`, `location_address`, `full_description`, `visit_price`, `estimated_duration`, `is_approved`, `short_description`, `created_by`) VALUES (:site_name, :location_address, :full_description, :visit_price, :estimated_duration, :is_approved, :short_description, :created_by)
+Data: Array
+(
+    [site_name] => Axum Obelisk Modern
+    [location_address] => ssf
+    [full_description] => gfsvj
+    [visit_price] => 53
+    [estimated_duration] => 4
+    [is_approved] => 
+    [short_description] => gfsvj
+    [created_by] => 2
+)
+
+[2025-12-09 11:15:00] Success: ID 3
+[2025-12-09 11:19:45] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInJvbGUiOiJyZXNlYXJjaGVyIiwiZW1haWwiOiJ5QGdtYWlsLmNvbSIsImlhdCI6MTc2NTI3NTUzMywiZXhwIjoxNzY1ODgwMzMzfQ.M54AZHPS6I-Aa5tm29Kzz2l4dSiCfo5Y6QaRPttYicQ
+Body: Array
+(
+    [site_name] => lalibela
+    [location] => wolo
+    [description] => gfhj
+    [price] => 1000
+    [image] => blob:http://localhost:3000/30f7a815-52a0-4c45-b918-18307c9779df
+    [category] => Historical Site
+    [region] => amhara
+    [visit_duration] => 4
+    [nearby_attractions] => bnf
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:19:45] Input: Array
+(
+    [site_name] => lalibela
+    [location] => wolo
+    [description] => gfhj
+    [price] => 1000
+    [image] => blob:http://localhost:3000/30f7a815-52a0-4c45-b918-18307c9779df
+    [category] => Historical Site
+    [region] => amhara
+    [visit_duration] => 4
+    [nearby_attractions] => bnf
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:19:45] SQL: INSERT INTO `Sites` (`site_name`, `location_address`, `full_description`, `visit_price`, `estimated_duration`, `is_approved`, `short_description`, `created_by`) VALUES (:site_name, :location_address, :full_description, :visit_price, :estimated_duration, :is_approved, :short_description, :created_by)
+Data: Array
+(
+    [site_name] => lalibela
+    [location_address] => wolo
+    [full_description] => gfhj
+    [visit_price] => 1000
+    [estimated_duration] => 4
+    [is_approved] => 
+    [short_description] => gfhj
+    [created_by] => 2
+)
+
+[2025-12-09 11:19:45] Success: ID 4
+[2025-12-09 11:31:23] Auth: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInJvbGUiOiJyZXNlYXJjaGVyIiwiZW1haWwiOiJ5QGdtYWlsLmNvbSIsImlhdCI6MTc2NTI3NjI1MSwiZXhwIjoxNzY1ODgxMDUxfQ.62zGd6fTpIPRdK3ph1RGtoV5yNYSPISnMzaETZl9lgU
+Body: Array
+(
+    [site_name] => vbn
+    [location] => ssf
+    [description] => gdj
+    [price] => 1000
+    [image] => blob:http://localhost:3000/5cc50552-f24c-4b32-adf2-c43e45652d10
+    [category] => Historical Site
+    [region] => Tigray
+    [visit_duration] => 4
+    [nearby_attractions] => dsf
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:31:23] Input: Array
+(
+    [site_name] => vbn
+    [location] => ssf
+    [description] => gdj
+    [price] => 1000
+    [image] => blob:http://localhost:3000/5cc50552-f24c-4b32-adf2-c43e45652d10
+    [category] => Historical Site
+    [region] => Tigray
+    [visit_duration] => 4
+    [nearby_attractions] => dsf
+    [map_url] => 
+    [researcher_id] => 2
+    [is_approved] => 
+)
+
+[2025-12-09 11:31:23] SQL: INSERT INTO `Sites` (`site_name`, `location_address`, `full_description`, `visit_price`, `estimated_duration`, `is_approved`, `short_description`, `created_by`) VALUES (:site_name, :location_address, :full_description, :visit_price, :estimated_duration, :is_approved, :short_description, :created_by)
+Data: Array
+(
+    [site_name] => vbn
+    [location_address] => ssf
+    [full_description] => gdj
+    [visit_price] => 1000
+    [estimated_duration] => 4
+    [is_approved] => 
+    [short_description] => gdj
+    [created_by] => 2
+)
+
+[2025-12-09 11:31:23] Success: ID 5
