@@ -57,8 +57,19 @@ function About() {
           <div style={{
             borderRadius: '20px',
             overflow: 'hidden',
-            boxShadow: 'var(--card-shadow)'
-          }}>
+            boxShadow: 'var(--card-shadow)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-10px)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'var(--card-shadow)';
+            }}
+          >
             <img
               src="https://images.unsplash.com/photo-1489493887464-892be6d1daae?w=600&q=80"
               alt="Ethiopian Heritage"
@@ -66,8 +77,11 @@ function About() {
                 width: '100%',
                 height: '400px',
                 objectFit: 'cover',
-                display: 'block'
+                display: 'block',
+                transition: 'transform 0.3s ease'
               }}
+              onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+              onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
             />
           </div>
 
