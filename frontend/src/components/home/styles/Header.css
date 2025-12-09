@@ -146,6 +146,11 @@
     transform: translateY(-10.5px) rotate(-45deg);
 }
 
+/* Hide mobile signin on desktop */
+.mobile-signin {
+    display: none;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .header-container {
