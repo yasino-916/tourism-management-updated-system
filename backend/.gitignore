@@ -1,0 +1,6 @@
+/vendor/
+/.env
+/public/uploads/
+/composer.lock
+/.agent
+/.node_modules
